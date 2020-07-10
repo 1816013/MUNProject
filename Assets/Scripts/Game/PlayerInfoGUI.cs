@@ -23,7 +23,7 @@ public class PlayerInfoGUI : MonobitEngine.MonoBehaviour
     {
         GameObject textObj = Instantiate(Resources.Load("uGUI_Text")) as GameObject;
         textObj.transform.SetParent(this.transform);
-        //textObj.transform.localPosition;
+        textObj.transform.localPosition = Vector3.zero;
         m_PlayerInfoText = textObj.GetComponent<Text>();
         m_PlayerInfoText.text = "NoEntry";
         ID = int.MaxValue;

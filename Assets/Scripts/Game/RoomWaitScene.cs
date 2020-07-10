@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using MonobitEngine;
+using UnityEngine.SceneManagement;
 
 public class RoomWaitScene : MonobitEngine.MonoBehaviour
 {
-    private GameObject m_Camvas;
+    public GameObject m_button_;
+    public GameObject m_Camvas;
     // ルーム参加数のオブジェクト
     private GameObject m_RoomMemberCountObj;
 
@@ -21,7 +23,6 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
             Debug.Log("ルームに入っていない");
             return;
         }
-        m_Camvas = Instantiate(Resources.Load("Canvas"))as GameObject;
         m_RoomMemberCountObj = Instantiate(Resources.Load("uGUI_Text")) as GameObject;
         m_RoomMemberCountObj.transform.SetParent(m_Camvas.transform);
         m_RoomMemberCountObj.transform.localPosition = new Vector3(0, 0, 0);
@@ -34,7 +35,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
             // PlayerInfoGUI.csが追加されたPrefabをインスタンス化
             m_PlayerInfos[i] = Instantiate(Resources.Load("PlayerInfoGUI")) as GameObject;
             m_PlayerInfos[i].transform.SetParent(m_Camvas.transform);
-            m_PlayerInfos[i].transform.localPosition = new Vector3(10, 20 * i + 20, 0);
+            m_PlayerInfos[i].transform.localPosition = new Vector3(0, -20 * i - 20, 0);
         }
 
         // 作成したプレイヤー情報表示に参加プレイヤーの情報を設定
@@ -87,5 +88,20 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
     {
         m_RoomMemberCountObj.GetComponent<Text>().text = MonobitNetwork.room.name +
            "(" + MonobitNetwork.room.playerCount + "/" + MonobitNetwork.room.maxPlayers + ")";
+    }
+
+    public void OnClickLeave()
+    {
+        MonobitNetwork.DisconnectServer();
+    }
+
+    // サーバーから切断した時に呼ばれるコールバック
+    public void OnDisconnectedFromServer()
+    {
+        Debug.Log("切断しました");
+
+        OnClickLeave();
+
+        SceneManager.LoadScene("Title");
     }
 }
