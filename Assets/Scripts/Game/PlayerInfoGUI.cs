@@ -55,16 +55,4 @@ public class PlayerInfoGUI : MonobitEngine.MonoBehaviour
         string attribute = m_Player.isHost ? "Host" : "Guest";
         m_PlayerInfoText.text = m_Player.ID + ":" + m_Player.name + " " + attribute;
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

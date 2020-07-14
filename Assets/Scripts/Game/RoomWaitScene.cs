@@ -35,7 +35,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
             // PlayerInfoGUI.csが追加されたPrefabをインスタンス化
             m_PlayerInfos[i] = Instantiate(Resources.Load("PlayerInfoGUI")) as GameObject;
             m_PlayerInfos[i].transform.SetParent(m_Camvas.transform);
-            m_PlayerInfos[i].transform.localPosition = new Vector3(0, -20 * i - 20, 0);
+            m_PlayerInfos[i].transform.localPosition = new Vector3(0, -24 * i - 24, 0);
         }
 
         // 作成したプレイヤー情報表示に参加プレイヤーの情報を設定
