@@ -33,9 +33,12 @@ public class ScrollView : UnityEngine.MonoBehaviour
                 continue;
             }
             GameObject button = (GameObject)Instantiate(m_ButtonPrefab);
-            button.transform.SetParent(scrollViewContent);
-            button.transform.localPosition.Set(0, i * 30, 0); 
+            button.transform.SetParent(scrollViewContent, false);
+
+            button.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, i * -30, 0);
             
+
+
             button.GetComponent<ScrollViewButton>().Set(MonobitNetwork.GetRoomData()[i]);
 
             m_ButtonList.Add(button);

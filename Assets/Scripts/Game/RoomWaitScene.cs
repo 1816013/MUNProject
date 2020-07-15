@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class RoomWaitScene : MonobitEngine.MonoBehaviour
 {
     public GameObject m_button_;
-    public GameObject m_Camvas;
+    public GameObject m_Canvas;
     // ルーム参加数のオブジェクト
     private GameObject m_RoomMemberCountObj;
 
@@ -24,7 +24,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
             return;
         }
         m_RoomMemberCountObj = Instantiate(Resources.Load("uGUI_Text")) as GameObject;
-        m_RoomMemberCountObj.transform.SetParent(m_Camvas.transform);
+        m_RoomMemberCountObj.transform.SetParent(m_Canvas.transform);
         m_RoomMemberCountObj.transform.localPosition = new Vector3(0, 0, 0);
         UpdatePlayersCount();
 
@@ -34,7 +34,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
         {
             // PlayerInfoGUI.csが追加されたPrefabをインスタンス化
             m_PlayerInfos[i] = Instantiate(Resources.Load("PlayerInfoGUI")) as GameObject;
-            m_PlayerInfos[i].transform.SetParent(m_Camvas.transform);
+            m_PlayerInfos[i].transform.SetParent(m_Canvas.transform);
             m_PlayerInfos[i].transform.localPosition = new Vector3(0, -24 * i - 24, 0);
         }
 
@@ -77,7 +77,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
                 continue;
             }
             playerInfo.Clear();
-            m_PlayerInfos[i].SetActive(false);
+            //m_PlayerInfos[i].SetActive(false);
             break;
         }
         UpdatePlayersCount();
