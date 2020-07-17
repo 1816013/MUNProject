@@ -35,7 +35,7 @@ public class ScrollView : UnityEngine.MonoBehaviour
             GameObject button = (GameObject)Instantiate(m_ButtonPrefab);
             button.transform.SetParent(scrollViewContent, false);
 
-            button.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, i * -30, 0);
+            button.GetComponent<RectTransform>().anchoredPosition = new Vector3(0, i * -30 + 120, 0);
             
 
 

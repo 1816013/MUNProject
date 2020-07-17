@@ -955,6 +955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_PasswordFieldObj: {fileID: 252837412}
+  m_PasswordTextObj: {fileID: 2134475954}
   m_toggle: {fileID: 1797867874}
   m_roomNameInput: {fileID: 1168627831}
   m_passwordInput: {fileID: 252837413}

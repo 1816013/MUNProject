@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class RoomWaitScene : MonobitEngine.MonoBehaviour
 {
-    public GameObject m_button_;
+    public GameObject m_LeaveButton;
+    public GameObject m_Start;
     public GameObject m_Canvas;
     // ルーム参加数のオブジェクト
     private GameObject m_RoomMemberCountObj;
@@ -88,6 +89,11 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
     {
         m_RoomMemberCountObj.GetComponent<Text>().text = MonobitNetwork.room.name +
            "(" + MonobitNetwork.room.playerCount + "/" + MonobitNetwork.room.maxPlayers + ")";
+    }
+
+    public void OnClickStart()
+    {
+        SceneManager.LoadScene("InGame");
     }
 
     public void OnClickLeave()

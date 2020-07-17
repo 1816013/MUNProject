@@ -15,6 +15,7 @@ public class CreateScene : MonobitEngine.MonoBehaviour
     private string m_RoomName = string.Empty;
 
     public GameObject m_PasswordFieldObj;
+    public GameObject m_PasswordTextObj;
     public Toggle m_toggle;
     public InputField m_roomNameInput;
     public InputField m_passwordInput;
@@ -77,7 +78,8 @@ public class CreateScene : MonobitEngine.MonoBehaviour
     private void OnCheckPrivateSetting(bool isOn)
     {
         m_PasswordFieldObj.SetActive(isOn);
-        if(!isOn)
+        m_PasswordTextObj.SetActive(isOn);
+        if (!isOn)
         {
             m_RoomSettings.roomParameters["password"] = "empty";
         }
