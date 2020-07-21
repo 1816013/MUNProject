@@ -73,6 +73,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
         for (int i = 0; i < length; ++i)
         {
             PlayerInfoGUI playerInfo = m_PlayerInfos[i].GetComponent<PlayerInfoGUI>();
+            
             if (playerInfo.ID != otherPlayer.ID)
             {
                 continue;
@@ -80,6 +81,14 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
             playerInfo.Clear();
             //m_PlayerInfos[i].SetActive(false);
             break;
+        }
+        length = m_PlayerInfos.Length;
+        for (int i = 0; i < length; ++i)
+        {
+            PlayerInfoGUI playerInfo = m_PlayerInfos[i].GetComponent<PlayerInfoGUI>();
+            playerInfo.Clear();
+            playerInfo.Set(MonobitNetwork.playerList[i]);          
+            playerInfo.InfoUpdate();    
         }
         UpdatePlayersCount();
     }
@@ -93,7 +102,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
 
     public void OnClickStart()
     {
-        SceneManager.LoadScene("InGame");
+        SceneManager.LoadScene("Game");
     }
 
     public void OnClickLeave()

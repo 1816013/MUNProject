@@ -55,6 +55,7 @@ public class ChatScript : MonobitEngine.MonoBehaviour
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Message : ");
                 chatWord = GUILayout.TextField(chatWord, GUILayout.Width(400));
+                
                 GUILayout.EndHorizontal();
 
                 // チャット発言文を送信する

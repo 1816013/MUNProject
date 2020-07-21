@@ -30,6 +30,9 @@ EditorBuildSettings:
     path: Assets/Scenes/game/CreateRoom.unity
     guid: 25ba4907ff9cbf94ca8bd7ef6cc82909
   - enabled: 1
+    path: Assets/Scenes/game/Game.unity
+    guid: 9e0f338525b3b5342897e1664d59bd16
+  - enabled: 1
     path: Assets/Scenes/game/RoomWait.unity
     guid: 73ba5467df4b2ae4583111c5726602fe
   m_configObjects: {}
