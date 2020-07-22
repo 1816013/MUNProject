@@ -102,6 +102,13 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
 
     public void OnClickStart()
     {
+       // SceneManager.LoadScene("Game");
+        monobitView.RPC("StartGame", MonobitTargets.All);
+    }
+
+    [MunRPC]
+    private void StartGame()
+    {
         SceneManager.LoadScene("Game");
     }
 
