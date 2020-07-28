@@ -16,6 +16,8 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
     // プレイヤー情報を表示するオブジェクト
     private GameObject[] m_PlayerInfos;
 
+    private bool isReady;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,6 +26,14 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
             Debug.Log("ルームに入っていない");
             return;
         }
+        Hashtable playerCustomParams = new Hashtable();
+        playerCustomParams["ready"] = MonobitNetwork.isHost;
+        MonobitNetwork.SetPlayerCustomParameters(playerCustomParams);
+
+        string startButtonText = MonobitNetwork.isHost ? "Start" : "Ready";
+        m_Start.transform.Find("Text").GetComponent<Text>().text = startButtonText;
+
+
         m_RoomMemberCountObj = Instantiate(Resources.Load("uGUI_Text")) as GameObject;
         m_RoomMemberCountObj.transform.SetParent(m_Canvas.transform);
         m_RoomMemberCountObj.transform.localPosition = new Vector3(0, 0, 0);
@@ -45,6 +55,7 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
         {
             m_PlayerInfos[i].GetComponent<PlayerInfoGUI>().Set(MonobitNetwork.playerList[i]);
             m_PlayerInfos[i].SetActive(true);
+           
         }
     }
 
@@ -79,18 +90,45 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
                 continue;
             }
             playerInfo.Clear();
-            //m_PlayerInfos[i].SetActive(false);
+          //  m_PlayerInfos[i].SetActive(false);
             break;
         }
-        length = m_PlayerInfos.Length;
+        var pLength = MonobitNetwork.playerList.Length;
         for (int i = 0; i < length; ++i)
         {
             PlayerInfoGUI playerInfo = m_PlayerInfos[i].GetComponent<PlayerInfoGUI>();
-            playerInfo.Clear();
-            playerInfo.Set(MonobitNetwork.playerList[i]);          
-            playerInfo.InfoUpdate();    
+            if (pLength > i)
+            {
+                playerInfo.Set(MonobitNetwork.playerList[i]);
+            }
+            else
+            {
+                playerInfo.Clear();
+            }   
         }
         UpdatePlayersCount();
+    }
+
+    public void OnHostChanged(MonobitPlayer newHost)
+    {
+        // 新しくホストになったプレイヤーが自分で無ければ処理は不要
+        if (!MonobitNetwork.isHost) { return; }
+
+        // ホストに変更があったのでプレイヤーの情報を更新する
+        int length = m_PlayerInfos.Length;
+        for (int i = 0; i < length; ++i)
+        {
+            PlayerInfoGUI plyaerInfo = m_PlayerInfos[i].GetComponent<PlayerInfoGUI>();
+
+            plyaerInfo.InfoUpdate();
+        }
+
+        Hashtable playerCustomParam = MonobitNetwork.player.customParameters;
+        playerCustomParam["ready"] = true;
+        MonobitNetwork.SetPlayerCustomParameters(playerCustomParam);
+
+        string startButtonText = MonobitNetwork.isHost ? "Start" : "Ready";
+        m_Start.transform.Find("Text").GetComponent<Text>().text = startButtonText;
     }
 
     // ルーム人数の表示を更新する
@@ -102,8 +140,48 @@ public class RoomWaitScene : MonobitEngine.MonoBehaviour
 
     public void OnClickStart()
     {
-       // SceneManager.LoadScene("Game");
-        monobitView.RPC("StartGame", MonobitTargets.All);
+        // monobitView.RPC("StartGame", MonobitTargets.All);
+        if (MonobitNetwork.isHost) // ホスト側なので、ゲームスタートボタンの処理
+        {
+            int length = MonobitNetwork.playerList.Length;
+            for (int i = 0; i < MonobitNetwork.playerList.Length; ++i)
+            {
+                if ((bool)MonobitNetwork.playerList[i].customParameters["ready"] == false)
+                {
+                    Debug.Log(MonobitNetwork.playerList[i].name + "is not ready.");
+
+                    return;
+                }
+            }
+            monobitView.RPC("StartGame", MonobitTargets.All);
+            Debug.Log("Game Start!");
+        }
+        else // ゲスト側なので、Readyボタンの処理
+        {
+            Hashtable playerCustomParam = MonobitNetwork.player.customParameters;
+
+            playerCustomParam["ready"] = ((bool)playerCustomParam["ready"] == true) ? false : true;
+
+            MonobitNetwork.SetPlayerCustomParameters(playerCustomParam);
+        }
+    }
+
+    public void OnMonobitPlayerParametersChanged(object[] playerAndUpdatedParameters)
+    {
+        MonobitPlayer monobitPlayer = (MonobitPlayer)playerAndUpdatedParameters[0];
+        Hashtable playerParams = (Hashtable)playerAndUpdatedParameters[1];
+
+        int length = m_PlayerInfos.Length;
+        for (int i = 0; i < length; ++i)
+        {
+            PlayerInfoGUI plyaerInfo = m_PlayerInfos[i].GetComponent<PlayerInfoGUI>();
+
+            if (plyaerInfo.ID != monobitPlayer.ID) { continue; }
+
+            plyaerInfo.InfoUpdate();
+
+            break;
+        }
     }
 
     [MunRPC]

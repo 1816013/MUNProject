@@ -52,7 +52,21 @@ public class PlayerInfoGUI : MonobitEngine.MonoBehaviour
         {
             return;
         }
+        string readyText = "";
+        if (!m_Player.isHost && m_Player.customParameters["ready"] != null)
+        {
+            if ((bool)m_Player.customParameters["ready"])
+            {
+                readyText = "Ready";
+            }
+            else
+            {
+                readyText = "NotReady";
+            }
+        }
+        
         string attribute = m_Player.isHost ? "Host" : "Guest";
-        m_PlayerInfoText.text = m_Player.ID + ":" + m_Player.name + " " + attribute;
+        m_PlayerInfoText.text = m_Player.ID + ":" + m_Player.name + " " + attribute + readyText;
+       
     }
 }
